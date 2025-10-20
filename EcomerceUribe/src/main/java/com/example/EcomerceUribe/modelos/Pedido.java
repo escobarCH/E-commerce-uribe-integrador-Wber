@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name="pedidos")
+@Table(name="Pedidos")
 public class Pedido {
 
     @Id
@@ -20,7 +20,7 @@ public class Pedido {
     private Integer costoEnvio;
 
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "Pedido")
     @JsonManagedReference(value = "relacionpedidoproducto")
     private List<Producto> productos;
 

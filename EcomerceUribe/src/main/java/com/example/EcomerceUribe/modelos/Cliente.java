@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "Clientes")
 public class Cliente {
 
 
@@ -23,7 +23,7 @@ public class Cliente {
     private Departamentos departamentos;
     private String ciudad;
 
-    @OneToMany (mappedBy = "cliente")
+    @OneToMany (mappedBy = "Cliente")
     @JsonManagedReference(value = "relacionclientepedido")
     private List<Pedido> pedidos;
 
