@@ -23,7 +23,7 @@ public class EmpleadoSevicio {
         if (nuevoEmpleado.getCargo() == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Debe especificar el cargo del empleado."
+                    "***** Debe especificar el cargo del empleado *****"
             );
         }
 
@@ -32,7 +32,7 @@ public class EmpleadoSevicio {
         if (empleadoGuardado == null) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Ocurrió un error al intentar guardar el empleado."
+                    "***** Ocurrió un error al intentar guardar el empleado *****"
             );
         }
 
