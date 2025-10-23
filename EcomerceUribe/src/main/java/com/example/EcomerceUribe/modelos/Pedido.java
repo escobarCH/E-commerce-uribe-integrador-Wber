@@ -7,20 +7,31 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
 @Entity
-@Table(name="Pedidos")
+@Table(name="pedidos")
 public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "monto_total", nullable = false)
     private Integer montoTotal;
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
+    @Column(name = "fecha_entrega", nullable = true)
     private LocalDate fechaEntrega;
+    @Column(name = "costo_envio", nullable = false)
     private Integer costoEnvio;
 
 
-    @OneToMany(mappedBy = "Pedido")
+    @OneToMany(mappedBy = "pedido")
     @JsonManagedReference(value = "relacionpedidoproducto")
     private List<Producto> productos;
 
