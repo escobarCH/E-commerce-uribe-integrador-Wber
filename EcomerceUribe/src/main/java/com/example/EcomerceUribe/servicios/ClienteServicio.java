@@ -25,14 +25,14 @@ public class ClienteServicio {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
 
-                    "La referencia  de pago del cliente es obligatorio"
+                    "***** La referencia  de pago del cliente es obligatorio *****"
             );
         }
         Cliente clienteQueGuardoElRepo=this.repositorio.save(datosCliente);
         if(clienteQueGuardoElRepo==null){
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Error al guardar el cliente en la base de datos"
+                    "***** Error al guardar el cliente en la base de datos *****"
             );
 
         }
