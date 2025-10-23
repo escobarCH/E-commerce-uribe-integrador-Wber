@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "Clientes")
+@Table(name = "clientes")
 public class Cliente {
 
 
@@ -17,13 +17,20 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column (name = "direccion", nullable = false, length = 100)
     private String direccion;
+    @Column(name = "calificacion", nullable = true)
     private Double calificacion;
+    @Column(name = "referencia_pago", nullable = false, unique = true)
     private String referenciaPago;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "departamento", nullable = false)
     private Departamentos departamentos;
+    @Column(name = "ciudad", nullable = false)
     private String ciudad;
 
-    @OneToMany (mappedBy = "Cliente")
+    @OneToMany (mappedBy = "cliente")
     @JsonManagedReference(value = "relacionclientepedido")
     private List<Pedido> pedidos;
 

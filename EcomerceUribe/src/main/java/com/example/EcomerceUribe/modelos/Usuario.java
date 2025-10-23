@@ -9,8 +9,8 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "Usuarios")
-public class  Usuario {
+@Table(name = "usuarios")
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class  Usuario {
     private String documento;
 
     //Creando una relacion de 1 a 1 con Empleado
-    @OneToOne(mappedBy = "Usuario")
+    @OneToOne(mappedBy = "usuario")
     @JsonBackReference(value = "relacionempleadousuario")
     private Empleado empleado;
 
@@ -116,4 +116,3 @@ public class  Usuario {
         this.documento = documento;
     }
 }
-
