@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class UsuarioGenericoDTO {
     private  String nombres;
     private String correo;
-    private EstadosUsuario estado;
+    private EstadoUsuario estado;
     private LocalDate fechaNacimiento;
     private String documento;
 
