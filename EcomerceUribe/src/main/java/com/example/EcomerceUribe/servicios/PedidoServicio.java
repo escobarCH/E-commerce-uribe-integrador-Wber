@@ -1,15 +1,8 @@
 package com.example.EcomerceUribe.servicios;
 
-import com.example.EcomerceUribe.modelos.Cliente;
-import com.example.EcomerceUribe.modelos.DTOS.ClienteDTO;
 import com.example.EcomerceUribe.modelos.DTOS.PedidoDTO;
-import com.example.EcomerceUribe.modelos.DTOS.ProductoDTO;
 import com.example.EcomerceUribe.modelos.Pedido;
-import com.example.EcomerceUribe.modelos.Producto;
-import com.example.EcomerceUribe.modelos.Usuario;
-import com.example.EcomerceUribe.modelos.mapas.IClienteMapa;
 import com.example.EcomerceUribe.modelos.mapas.IPedidoMapa;
-import com.example.EcomerceUribe.repositorios.IClienteRepositorio;
 import com.example.EcomerceUribe.repositorios.IPedidoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
