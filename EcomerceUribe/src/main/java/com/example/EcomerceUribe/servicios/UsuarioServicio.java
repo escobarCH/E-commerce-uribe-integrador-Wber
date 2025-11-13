@@ -9,59 +9,153 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UsuarioServicio {
 
     @Autowired
-    private IUsuarioRepositorio usuarioRepositorio;
+    private IUsuarioRepositorio repositorio;
 
     @Autowired
-    private IUsuarioMapa usuarioMapa;
+    private IUsuarioMapa mapa;
 
-    /**
-     * Guarda un usuario genérico en el sistema.
-     * Valida correo duplicado, nombre no vacío y longitud mínima de la contraseña.
-     *
-     * @param datosUsuario Datos del usuario a guardar.
-     * @return UsuarioGenericoDTO con la información del usuario registrado.
-     */
-    public UsuarioGenericoDTO guardarUsuarioGenerico(Usuario datosUsuario) {
+    //ACTIVADO EL SERVICIO DE GUARDADO DE DATOS
 
-        // Validar correo duplicado
-        if (this.usuarioRepositorio.findByCorreo(datosUsuario.getCorreo()).isPresent()) {
+    public UsuarioGenericoDTO guardarUsuariogenerico(Usuario datosUsuario) {
+
+        //VALIDACIÓN DE CORREO DUPLICADO
+        if (this.repositorio.findByCorreo(datosUsuario.getCorreo()).isPresent()) {
+
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Ya existe un usuario registrado con el correo ingresado"
-            );
+
+                    "***** El Correo Electrónico Ya Está Registrado *****"            );
+
         }
 
-        // Validar que el nombre no esté vacío
+        //VALIDACIÓN DE QUE EL NOMBRE NO ESTE VACIO
         if (datosUsuario.getNombres() == null || datosUsuario.getNombres().isBlank()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "El nombre del usuario es obligatorio"
+
+                    "***** Nombre De Usuario Requerido *****"
             );
         }
 
-        // Validar longitud mínima de la contraseña
-        if (datosUsuario.getContraseña() == null || datosUsuario.getContraseña().length() < 6) {
+        //validación de que la contraseña es minima
+        if (datosUsuario.getContraseña().length() < 6) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "La contraseña debe tener al menos 6 caracteres"
+
+                    "***** Contraseña Mínima De 6 Caracteres *****"
             );
+
         }
 
-        // Guardar usuario en la base de datos
-        Usuario usuarioGuardado = this.usuarioRepositorio.save(datosUsuario);
+        //INTENTAR GUARDAR EL USUARIO
 
-        if (usuarioGuardado == null) {
+        Usuario usuarioQueGuardoElRepo = this.repositorio.save(datosUsuario);
+        if (usuarioQueGuardoElRepo == null) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Error al guardar el usuario en la base de datos"
+                    "***** Error Al Guardar Usuario En BASE De Datos *****"
             );
+
         }
 
-        // Convertir a DTO y devolver
-        return this.usuarioMapa.convertir_usuario_a_usuariogenericodto(usuarioGuardado);
+        return this.mapa.convertir_usuario_a_usuariogenericodto(usuarioQueGuardoElRepo);
+
+
+    }
+
+
+    //Buscar todos los usuario
+    public List<UsuarioGenericoDTO> buscarTodosLosUsuarios() {
+        List<Usuario> listaDeUsuariosConsultados = this.repositorio.findAll();
+        return this.mapa.convetir_lista_a_listadtogenerico(listaDeUsuariosConsultados);
+    }
+
+    //Buscar un usuario por Id
+    public UsuarioGenericoDTO buscarUsuarioGenericoPorId(Integer id) {
+        Optional<Usuario> usuarioQueEstoyBuscando = this.repositorio.findById(id);
+        if (!usuarioQueEstoyBuscando.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "***** EL Sistema No Encuentra  El usuario Con El ID:" + id + " Agregado *****"
+            );
+        }
+        Usuario usuarioEncontrado = usuarioQueEstoyBuscando.get();
+        return this.mapa.convertir_usuario_a_usuariogenericodto(usuarioEncontrado);
+    }
+
+    //Buscar un usuario por correo
+    public UsuarioGenericoDTO buscarUsuarioGenericoPorCorreo(String correo) {
+        Optional<Usuario> correoDelusuarioQueEstoyBuscando = this.repositorio.findByCorreo(correo);
+        if (!correoDelusuarioQueEstoyBuscando.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "***** El Correo " + correo + " No Tiene Ningun Usuario *****"
+            );
+        }
+        Usuario usuarioEncontrado = correoDelusuarioQueEstoyBuscando.get();
+        return this.mapa.convertir_usuario_a_usuariogenericodto(usuarioEncontrado);
+    }
+
+
+    //Eliminar un usuario
+    public void eliminarUsuario(Integer id) {
+        Optional<Usuario> usuarioQueEstoyBuscando = this.repositorio.findById(id);
+        if (!usuarioQueEstoyBuscando.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "***** ERROR En ID: " + id + " Del Usuario Fue Econtrado!! *****"
+            );
+        }
+        Usuario usuarioEncontrado = usuarioQueEstoyBuscando.get();
+        try {
+            this.repositorio.delete(usuarioEncontrado);
+        } catch (Exception error) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "***** Usuario No Se Pudo Eleiminar Del Sistema *****" + error.getMessage()
+            );
+
+        }
+
+    }
+
+    // Modificar algunos datos de un usuario
+    public UsuarioGenericoDTO actualizarUsuario(Integer id, Usuario datosActualizados) {
+        Optional<Usuario> usuarioQueEstoyBuscando = this.repositorio.findById(id);
+        if (!usuarioQueEstoyBuscando.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "***** ID " + id + " No Encontado En El Sistema *****"
+            );
+
+        }
+        Usuario usuarioEncontrado = usuarioQueEstoyBuscando.get();
+
+        // actualizo los campos que se permitieron modificar
+
+        usuarioEncontrado.setNombres(datosActualizados.getNombres());
+        usuarioEncontrado.setCorreo(datosActualizados.getCorreo());
+
+
+        //concluyo la operacion en la bd
+        Usuario usuarioActualizado = this.repositorio.save(usuarioEncontrado);
+
+
+        if (usuarioActualizado == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "***** ERROR Al Actualizar En La Base De datos, Intenta De Nuevo *****"
+            );
+
+        }
+
+        return this.mapa.convertir_usuario_a_usuariogenericodto(usuarioActualizado);
     }
 }
