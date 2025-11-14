@@ -6,13 +6,14 @@ import com.example.EcomerceUribe.modelos.mapas.IClienteMapa;
 import com.example.EcomerceUribe.repositorios.IClienteRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Component
 @Service
 public class ClienteServicio {
 
@@ -51,7 +52,7 @@ public class ClienteServicio {
         return this.mapa.convetir_lista_a_listaclientedto(listaDeClientesConsultados);
     }
 
-    //Buscar por Id
+    //Buscar por ID
     public  ClienteDTO buscarClientePorId (Integer id){
         Optional<Cliente> clienteQueEstoyBuscando=this.repositorio.findById(id);
         if(!clienteQueEstoyBuscando.isPresent()){
@@ -86,7 +87,7 @@ public class ClienteServicio {
 
     }
 
-    // Modificar algunos datos
+    // Modifica Ciertos Campos
     public ClienteDTO actualizarCliente(Integer id, Cliente datosActualizados) {
         Optional<Cliente> clienteQueEstoyBuscando = this.repositorio.findById(id);
         if (!clienteQueEstoyBuscando.isPresent()) {
@@ -98,12 +99,12 @@ public class ClienteServicio {
         }
         Cliente clienteEncontrado = clienteQueEstoyBuscando.get();
 
-        // actualizo los campos que se permitieron modificar
+        // Actializa Los Campos Que Pueden Modificarse
 
         clienteEncontrado.setDireccion(datosActualizados.getDireccion());
         clienteEncontrado.setReferenciaPago(datosActualizados.getReferenciaPago());
 
-        //concluyo la operacion en la bd
+        //Acaba La Operacion En La BD
         Cliente clienteActualizado = this.repositorio.save(clienteEncontrado);
 
 
