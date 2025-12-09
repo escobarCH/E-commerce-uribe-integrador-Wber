@@ -26,7 +26,7 @@ public class ClienteControlador {
 
     //guardar
     @Operation(summary = "Crear Un Nuevo Cliente")
-    @PostMapping(produces = "application/son")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<ClienteDTO> guardar(@RequestBody Cliente datos) {
         ClienteDTO respuesta = this.servicio.guardarCliente (datos);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
@@ -34,7 +34,7 @@ public class ClienteControlador {
 
     //listar todos
     @Operation(summary = "Obtener La Lista De Todos Los Clientes")
-    @GetMapping(produces = "application/son")
+    @GetMapping(produces = "application/json")
     public ResponseEntity<List<ClienteDTO>> listar() {
         List<ClienteDTO> respuesta = this.servicio.buscarTodosLosClientes();
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
@@ -42,7 +42,7 @@ public class ClienteControlador {
 
     //buscar por ID
     @Operation(summary = "Buscar Un Cliente Por ID")
-    @GetMapping(value = "/{id}", produces = "application/son")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<ClienteDTO> buscarporId(@PathVariable Integer id) {
         ClienteDTO respuesta = this.servicio.buscarClientePorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
@@ -51,7 +51,7 @@ public class ClienteControlador {
 
     //eliminar cliente
     @Operation(summary="Eliminar Un Cliente Por ID")
-    @DeleteMapping(value = "/{id}", produces = "application/son")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id){
         this.servicio.eliminarCliente(id);
         return ResponseEntity.noContent().build();
@@ -59,7 +59,7 @@ public class ClienteControlador {
 
     //modificar
     @Operation(summary = "Actualizar Los Datos De Un Cliente Por ID")
-    @PutMapping(value = "/{id}", produces = "application/son")
+    @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<ClienteDTO> modificar(@PathVariable Integer id, @RequestBody Cliente datos) {
         ClienteDTO respuesta = this.servicio.actualizarCliente(id, datos);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
