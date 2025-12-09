@@ -28,7 +28,7 @@ public class UsuarioControlador {
 
     //guardar
     @Operation(summary = "Crear Un Nuevo Usuario")
-    @PostMapping(produces = "application/son")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<UsuarioGenericoDTO> guardar(@RequestBody Usuario datos) {
         UsuarioGenericoDTO respuesta = this.servicio.guardarUsuariogenerico(datos);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
@@ -36,7 +36,7 @@ public class UsuarioControlador {
 
     //listar todos
     @Operation(summary = "Obtener La Lista De Todos Los Usuarios")
-    @GetMapping(produces = "application/son")
+    @GetMapping(produces = "application/json")
     public ResponseEntity<List<UsuarioGenericoDTO>> listar() {
         List<UsuarioGenericoDTO> respuesta = this.servicio.buscarTodosLosUsuarios();
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
@@ -44,7 +44,7 @@ public class UsuarioControlador {
 
     //buscar por ID
     @Operation(summary = "Buscar Un Usuario Por ID")
-    @GetMapping(value = "/{id}", produces = "application/son")
+    @GetMapping(value = "/{id}", produces = "application/json") // La ruta es: /api/usuarios/{id}
     public ResponseEntity<UsuarioGenericoDTO> buscarporId(@PathVariable Integer id) {
         UsuarioGenericoDTO respuesta = this.servicio.buscarUsuarioGenericoPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
@@ -52,7 +52,7 @@ public class UsuarioControlador {
 
     //buscar por correo
     @Operation(summary = "Buscar Un Usuario Por Correo Electrónico")
-    @GetMapping(value = "/{correo}", produces = "application/son")
+    @GetMapping(value = "/correo/{correo}", produces = "application/json") // <--- ¡CAMBIO AQUÍ!
     public ResponseEntity<UsuarioGenericoDTO> buscarporCorreo(@PathVariable String correo) {
         UsuarioGenericoDTO respuesta = this.servicio.buscarUsuarioGenericoPorCorreo(correo);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
@@ -68,7 +68,7 @@ public class UsuarioControlador {
 
     //modificar
     @Operation(summary = "Actualizar Nombre Y Correo De Un Usuario Por ID")
-    @PutMapping(value = "/{id}", produces = "application/son")
+    @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<UsuarioGenericoDTO> modificar(@PathVariable Integer id, @RequestBody Usuario datos) {
         UsuarioGenericoDTO respuesta = this.servicio.actualizarUsuario(id, datos);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
